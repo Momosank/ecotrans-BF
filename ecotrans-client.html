@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ECO-TRANS">
+<meta name="theme-color" content="#F5620F">
+<meta name="description" content="Achetez vos billets de transport en ligne au Burkina Faso.">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>ECO-TRANS – Votre voyage commence ici</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --or: #F5620F;
+  --or2: #FF8C42;
+  --or3: #FFB347;
+  --or-dark: #C44D09;
+  --or-deep: #7A2E00;
+  --bg: #FFF8F3;
+  --bg2: #FFF0E5;
+  --white: #FFFFFF;
+  --dark: #1A0A00;
+  --dark2: #3D1F00;
+  --text: #2D1500;
+  --text2: #8C5A2E;
+  --text3: #C49070;
+  --border: rgba(245,98,15,0.14);
+  --shadow: 0 4px 20px rgba(245,98,15,0.1);
+  --shadow2: 0 12px 40px rgba(245,98,15,0.2);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;max-width:480px;margin:0 auto;position:relative}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--or);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s}
+.ld-logo{font-weight:900;font-size:40px;color:#fff;letter-spacing:-1px;animation:pulse .9s ease infinite}
+.ld-logo span{color:var(--or3)}
+.ld-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:8px;letter-spacing:3px;text-transform:uppercase}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.8;transform:scale(.96)}}
+
+/* HEADER */
+.hdr{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(245,98,15,.07)}
+.hdr-logo{font-weight:900;font-size:22px;color:var(--or);letter-spacing:-.5px;cursor:pointer}
+.hdr-logo span{color:var(--or3)}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.hdr-btn{padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:all .2s}
+.hdr-btn.ghost{background:transparent;color:var(--text2);border:1.5px solid var(--border)}
+.hdr-btn.solid{background:var(--or);color:#fff;box-shadow:0 3px 10px rgba(245,98,15,.3)}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--white);border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(245,98,15,.08)}
+.bi{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 13px;cursor:pointer;transition:all .2s;position:relative;gap:3px}
+.bi-icon{font-size:21px;transition:transform .2s}
+.bi-lbl{font-size:10px;font-weight:700;color:var(--text3);transition:color .2s}
+.bi.active .bi-lbl{color:var(--or)}
+.bi.active .bi-icon{transform:translateY(-2px)}
+.bi.active::after{content:'';position:absolute;top:0;left:22%;right:22%;height:3px;background:var(--or);border-radius:0 0 4px 4px}
+
+/* PAGES */
+.page{display:none;padding-bottom:85px;animation:slideUp .3s ease}
+.page.active{display:block}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== ACCUEIL ===== */
+.hero{background:linear-gradient(140deg,var(--or) 0%,var(--or-dark) 55%,var(--or-deep) 100%);padding:32px 22px 52px;position:relative;overflow:hidden}
+.hero::before{content:'🚌';position:absolute;right:-15px;bottom:-15px;font-size:130px;opacity:.1;transform:scaleX(-1)}
+.hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='20' cy='20' r='2'/%3E%3C/g%3E%3C/svg%3E")}
+.hero-greet{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:6px;letter-spacing:.5px;position:relative;z-index:1}
+.hero-title{font-family:'DM Serif Display',serif;font-size:32px;color:#fff;line-height:1.15;margin-bottom:10px;position:relative;z-index:1}
+.hero-title em{color:var(--or3);font-style:italic}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.75);line-height:1.65;position:relative;z-index:1}
+
+.search-card{background:var(--white);border-radius:20px;margin:-24px 14px 0;padding:20px;box-shadow:var(--shadow2);position:relative;z-index:10}
+.sc-lbl{font-size:11px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.route-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.route-box{flex:1;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:11px 13px}
+.rb-lbl{font-size:9px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.rb-sel{background:transparent;border:none;outline:none;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);width:100%;cursor:pointer}
+.swap-btn{width:36px;height:36px;border-radius:50%;background:var(--or);color:#fff;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:transform .3s;flex-shrink:0}
+.swap-btn:hover{transform:rotate(180deg)}
+.date-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.date-field{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:11px 13px}
+.df-lbl{font-size:9px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px}
+.df-inp{background:transparent;border:none;outline:none;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--text);width:100%}
+.btn-search{width:100%;padding:14px;background:linear-gradient(135deg,var(--or),var(--or-dark));color:#fff;border:none;border-radius:13px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(245,98,15,.35);letter-spacing:.3px}
+.btn-search:active{transform:scale(.98)}
+
+.sec{padding:26px 18px 0}
+.sec-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.see-all{margin-left:auto;font-size:12px;font-weight:700;color:var(--or);cursor:pointer}
+
+.chips{display:flex;gap:9px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;background:var(--white);border:1.5px solid var(--border);border-radius:50px;padding:9px 17px;cursor:pointer;display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--text2);transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.chip:hover,.chip.on{background:var(--or);color:#fff;border-color:var(--or);box-shadow:0 4px 14px rgba(245,98,15,.3)}
+
+/* TRIP CARDS */
+.trip-list{display:flex;flex-direction:column;gap:13px;padding-bottom:10px}
+.tc{background:var(--white);border-radius:16px;border:1.5px solid var(--border);padding:17px;cursor:pointer;transition:all .25s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.tc:active{transform:scale(.98)}
+.tc:hover{border-color:var(--or2);box-shadow:var(--shadow)}
+.tc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:13px}
+.tc-comp{font-size:12px;font-weight:700;color:var(--text3)}
+.tc-time{font-size:11px;color:var(--text3);margin-top:2px}
+.tc-price{font-size:19px;font-weight:900;color:var(--or)}
+.tc-price span{font-size:11px;font-weight:500;color:var(--text3)}
+.tc-route{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.tc-city{font-size:16px;font-weight:800}
+.tc-line{flex:1;display:flex;align-items:center;gap:0}
+.tc-bar{flex:1;height:2px;background:linear-gradient(90deg,var(--or),var(--or3));border-radius:2px}
+.tc-dot{font-size:14px;margin:-1px 2px}
+.tc-dur{font-size:11px;color:var(--text3);text-align:center;margin-top:-6px;margin-bottom:8px}
+.tc-tags{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.tag{padding:4px 9px;border-radius:20px;font-size:11px;font-weight:700;background:var(--bg2);color:var(--text2)}
+.tag.g{background:rgba(34,197,94,.1);color:#16a34a}
+.tc-seats{margin-left:auto;font-size:11px;color:var(--text3);font-weight:600}
+
+/* ===== BILLET FLOW ===== */
+.flow-bar{display:flex;align-items:center;padding:18px 22px;background:var(--white);border-bottom:1px solid var(--border)}
+.fs{flex:1;text-align:center;position:relative}
+.fs::after{content:'';position:absolute;top:14px;left:50%;right:-50%;height:2px;background:var(--border)}
+.fs:last-child::after{display:none}
+.fc{width:28px;height:28px;border-radius:50%;background:var(--bg2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 5px;font-size:11px;font-weight:800;color:var(--text3);position:relative;z-index:1;transition:all .3s}
+.fc.done{background:var(--or);border-color:var(--or);color:#fff}
+.fc.cur{background:#fff;border-color:var(--or);color:var(--or);box-shadow:0 0 0 4px rgba(245,98,15,.12)}
+.fl{font-size:10px;font-weight:700;color:var(--text3)}
+.fl.cur{color:var(--or)}
+
+.sc{padding:22px 18px;display:none}
+.sc.active{display:block;animation:slideUp .3s ease}
+
+/* FORMS */
+.fg{margin-bottom:15px}
+.flbl{display:block;font-size:11px;font-weight:800;color:var(--text2);margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px}
+.fi,.fsel{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;font-size:14px;color:var(--text);font-family:'Outfit',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s}
+.fi:focus,.fsel:focus{border-color:var(--or);box-shadow:0 0 0 3px rgba(245,98,15,.1)}
+.fsel option{background:#fff}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.price-banner{background:linear-gradient(135deg,var(--or),var(--or-dark));border-radius:16px;padding:18px 20px;margin:18px 0;color:#fff}
+.pb-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.15)}
+.pb-row:last-child{border:none;padding-top:10px}
+.pb-lbl{font-size:13px;opacity:.85}
+.pb-val{font-size:14px;font-weight:700}
+.pb-total{font-size:24px;font-weight:900}
+
+/* PAYMENT */
+.pay-list{display:flex;flex-direction:column;gap:11px}
+.po{background:var(--white);border:2px solid var(--border);border-radius:14px;padding:15px 17px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all .2s}
+.po:hover{border-color:var(--or2)}
+.po.on{border-color:var(--or);background:rgba(245,98,15,.03)}
+.po-logo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.po-name{font-size:14px;font-weight:700;color:var(--text)}
+.po-desc{font-size:11px;color:var(--text3);margin-top:1px}
+.po-dot{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.po.on .po-dot{background:var(--or);border-color:var(--or)}
+.po.on .po-dot::after{content:'';width:8px;height:8px;background:#fff;border-radius:50%}
+.pay-amount-box{background:var(--bg2);border-radius:12px;padding:14px;margin:16px 0;border:1.5px solid var(--border)}
+.pab-lbl{font-size:11px;color:var(--text3);margin-bottom:3px}
+.pab-val{font-size:26px;font-weight:900;color:var(--or)}
+.pab-via{font-size:11px;color:var(--text3);margin-top:3px}
+.pab-via span{color:var(--or);font-weight:700}
+
+/* TICKET */
+.ticket-wrap{background:linear-gradient(145deg,var(--or-deep),#0D0500);border-radius:22px;overflow:hidden;box-shadow:0 16px 50px rgba(245,98,15,.35);margin:4px}
+.tk-top{background:linear-gradient(135deg,var(--or),var(--or-dark));padding:22px 22px 20px}
+.tk-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.tk-brand{font-weight:900;font-size:18px;color:#fff}
+.tk-brand span{color:var(--or3)}
+.tk-badge{background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.3)}
+.tk-route{display:flex;align-items:center;gap:10px}
+.tk-city{font-family:'DM Serif Display',serif;font-size:26px;color:#fff}
+.tk-mid{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tk-line{width:100%;height:2px;background:linear-gradient(90deg,rgba(255,255,255,.3),rgba(255,255,255,.8),rgba(255,255,255,.3));border-radius:2px;position:relative}
+.tk-line::after{content:'▶';position:absolute;right:-6px;top:-7px;font-size:13px;color:#fff}
+.tk-dur{font-size:10px;color:rgba(255,255,255,.65);font-weight:600}
+.tk-notch{display:flex;margin:0}
+.tk-nl,.tk-nr{width:20px;height:20px;border-radius:50%;background:var(--bg);flex-shrink:0}
+.tk-nl{margin-left:-10px}
+.tk-nr{margin-left:auto;margin-right:-10px}
+.tk-dash{flex:1;border-top:2px dashed rgba(255,255,255,.12);margin:9px 0}
+.tk-body{padding:18px 22px}
+.tk-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.tkg-lbl{font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1px}
+.tkg-val{font-size:13px;font-weight:700;color:#fff;margin-top:3px}
+.tk-code-box{background:rgba(255,255,255,.05);border:1px dashed rgba(255,255,255,.2);border-radius:12px;padding:16px;text-align:center}
+.tk-code-lbl{font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.tk-code{font-weight:900;font-size:34px;letter-spacing:9px;color:var(--or3)}
+.tk-code-hint{font-size:10px;color:rgba(255,255,255,.35);margin-top:6px}
+
+/* COLIS */
+.colis-hero{background:linear-gradient(135deg,var(--or-dark),var(--or-deep));padding:28px 20px 36px;text-align:center;color:#fff}
+.ch-icon{font-size:44px;margin-bottom:10px}
+.ch-title{font-size:20px;font-weight:800;margin-bottom:5px}
+.ch-sub{font-size:13px;opacity:.7;line-height:1.6}
+.ctype-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:18px}
+.ctc{background:var(--white);border:2px solid var(--border);border-radius:15px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .2s}
+.ctc:hover,.ctc.on{border-color:var(--or);background:rgba(245,98,15,.04);transform:translateY(-2px)}
+.ctc.on .ctc-name{color:var(--or)}
+.ctc-em{font-size:28px;margin-bottom:8px}
+.ctc-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px}
+.ctc-price{font-size:12px;color:var(--text3)}
+
+/* RESERVATION */
+.res-hero{background:linear-gradient(135deg,#1a4a7a,#0a2040);padding:28px 20px 38px;text-align:center;color:#fff}
+.res-cards{display:flex;flex-direction:column;gap:12px}
+.rc{background:var(--white);border-radius:15px;border:1.5px solid var(--border);padding:16px;box-shadow:var(--shadow)}
+.rc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px}
+.rc-code{font-size:12px;font-weight:800;color:var(--text2)}
+.rc-date{font-size:11px;color:var(--text3);margin-top:2px}
+.rc-actions{display:flex;gap:8px;margin-top:12px}
+.rc-btn{flex:1;padding:9px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text2);font-family:'Outfit',sans-serif;transition:all .2s}
+.rc-btn:hover{border-color:var(--or);color:var(--or)}
+
+/* LITIGE */
+.lit-hero{background:linear-gradient(135deg,var(--dark2),var(--dark));padding:28px 20px 36px;text-align:center;color:#fff}
+.lit-steps{padding:20px 18px 0}
+.lstep{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.lstep:last-child{border:none}
+.lsn{width:34px;height:34px;border-radius:50%;background:var(--or);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0}
+.lsn.done{background:#16a34a}
+.ls-title{font-size:14px;font-weight:700;margin-bottom:2px}
+.ls-desc{font-size:12px;color:var(--text3);line-height:1.5}
+
+/* PROFIL */
+.prof-header{background:linear-gradient(135deg,var(--or),var(--or-dark));padding:36px 20px 52px;text-align:center}
+.prof-av{width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.2);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:28px;border:3px solid rgba(255,255,255,.4)}
+.prof-name{font-size:20px;font-weight:800;color:#fff}
+.prof-phone{font-size:13px;color:rgba(255,255,255,.7);margin-top:3px}
+.prof-stats{margin:-26px 14px 0;display:grid;grid-template-columns:1fr 1fr;gap:11px;position:relative;z-index:10}
+.pstat{background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+.pstat-val{font-size:24px;font-weight:900;color:var(--or)}
+.pstat-lbl{font-size:11px;color:var(--text3);margin-top:2px}
+.pmenu{padding:22px 16px}
+.mi{display:flex;align-items:center;gap:13px;padding:15px;background:#fff;border-radius:13px;margin-bottom:10px;cursor:pointer;transition:all .2s;border:1.5px solid var(--border)}
+.mi:active{transform:scale(.98)}
+.mi:hover{border-color:var(--or2);transform:translateX(3px)}
+.mi-ic{width:40px;height:40px;border-radius:11px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mi-title{font-size:14px;font-weight:700}
+.mi-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.mi-arr{margin-left:auto;color:var(--text3);font-size:18px}
+
+/* BUTTONS */
+.btn-main{width:100%;padding:15px;background:linear-gradient(135deg,var(--or),var(--or-dark));color:#fff;border:none;border-radius:13px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(245,98,15,.35);margin-top:8px}
+.btn-main:active{transform:scale(.98)}
+.btn-out{width:100%;padding:14px;background:transparent;color:var(--or);border:2px solid var(--or);border-radius:13px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
+
+/* STATUS BADGES */
+.sb{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.sb.g{background:rgba(34,197,94,.1);color:#16a34a}
+.sb.b{background:rgba(59,130,246,.1);color:#2563eb}
+.sb.y{background:rgba(245,158,11,.1);color:#d97706}
+
+/* TOAST */
+.toast{position:fixed;bottom:92px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--dark);color:#fff;border-radius:50px;padding:12px 22px;font-size:13px;font-weight:700;z-index:999;opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,.3);pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:linear-gradient(135deg,#16a34a,#15803d)}
+.toast.err{background:linear-gradient(135deg,#dc2626,#b91c1c)}
+
+/* RECAP */
+.recap-box{background:var(--white);border:1.5px solid var(--border);border-radius:13px;padding:15px;margin-bottom:15px}
+.rrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.rlbl{font-size:13px;color:var(--text2)}
+.rval{font-size:13px;font-weight:700;color:var(--text)}
+
+.pad{padding:20px 18px}
+.success-top{text-align:center;margin-bottom:22px}
+.success-top .sicon{font-size:44px;margin-bottom:8px}
+.success-top .stitle{font-size:19px;font-weight:800}
+.success-top .ssub{font-size:13px;color:var(--text3);margin-top:4px}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-logo">ECO<span>-TRANS</span></div>
+  <div class="ld-sub">Ouagadougou · Burkina Faso</div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-logo" onclick="showPage('accueil')">ECO<span>-TRANS</span></div>
+  <div class="hdr-right">
+    <button class="hdr-btn ghost" onclick="showPage('profil')">👤 Compte</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE ACCUEIL
+========================================================= -->
+<div id="page-accueil" class="page active">
+  <div class="hero">
+    <div class="hero-greet">🇧🇫 Bonjour, voyageur !</div>
+    <div class="hero-title">Votre voyage<br><em>commence ici</em></div>
+    <div class="hero-sub">Billets, colis, réservations — tout en ligne, tout simple.</div>
+  </div>
+
+  <div class="search-card">
+    <div class="sc-lbl">🔍 Rechercher un trajet</div>
+    <div class="route-row">
+      <div class="route-box">
+        <div class="rb-lbl">Départ</div>
+        <select class="rb-sel" id="h-dep">
+          <option>Ouagadougou</option>
+          <option>Bobo-Dioulasso</option>
+          <option>Koudougou</option>
+          <option>Ouahigouya</option>
+          <option>Fada N'Gourma</option>
+        </select>
+      </div>
+      <button class="swap-btn" onclick="swapVilles()">⇄</button>
+      <div class="route-box">
+        <div class="rb-lbl">Arrivée</div>
+        <select class="rb-sel" id="h-arr">
+          <option>Bobo-Dioulasso</option>
+          <option>Ouagadougou</option>
+          <option>Fada N'Gourma</option>
+          <option>Koudougou</option>
+          <option>Ouahigouya</option>
+          <option>Dédougou</option>
+          <option>Banfora</option>
+        </select>
+      </div>
+    </div>
+    <div class="date-row">
+      <div class="date-field">
+        <label class="df-lbl">Date</label>
+        <input class="df-inp" type="date" id="h-date">
+      </div>
+      <div class="date-field">
+        <label class="df-lbl">Passagers</label>
+        <select class="df-inp" style="cursor:pointer">
+          <option>1 passager</option>
+          <option>2 passagers</option>
+          <option>3 passagers</option>
+          <option>4+ passagers</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-search" onclick="rechercherTrajets()">🚌 Voir les départs disponibles</button>
+  </div>
+
+  <div class="sec" style="margin-top:26px">
+    <div class="sec-title">Nos services <span class="see-all" onclick="showPage('billets')">Tout voir →</span></div>
+    <div class="chips">
+      <div class="chip on" onclick="showPage('billets')">🎟️ Billets</div>
+      <div class="chip" onclick="showPage('colis')">📦 Colis</div>
+      <div class="chip" onclick="showPage('reservation')">📋 Réservations</div>
+      <div class="chip" onclick="showPage('litige')">⚖️ Litiges</div>
+    </div>
+  </div>
+
+  <div class="sec" style="margin-top:22px;padding-bottom:10px">
+    <div class="sec-title">🔥 Trajets populaires</div>
+    <div class="trip-list">
+
+      <div class="tc" onclick="lancerBillet('Ouagadougou','Bobo-Dioulasso','5000','TCV','06h00','~5h30')">
+        <div class="tc-top">
+          <div>
+            <div class="tc-comp">🚌 TCV · Départ 06h00</div>
+          </div>
+          <div class="tc-price">5 050<span> F CFA</span></div>
+        </div>
+        <div class="tc-route">
+          <div class="tc-city">Ouaga</div>
+          <div class="tc-line"><div class="tc-bar"></div><div class="tc-dot">🚌</div></div>
+          <div class="tc-city">Bobo</div>
+        </div>
+        <div class="tc-dur">~5h30 de trajet</div>
+        <div class="tc-tags">
+          <div class="tag g">✓ Places dispo</div>
+          <div class="tag">Climatisé</div>
+          <div class="tc-seats">12 places</div>
+        </div>
+      </div>
+
+      <div class="tc" onclick="lancerBillet('Ouagadougou','Fada N\'Gourma','7500','ELITIS','07h30','~4h00')">
+        <div class="tc-top">
+          <div>
+            <div class="tc-comp">🚌 ELITIS · Départ 07h30</div>
+          </div>
+          <div class="tc-price">7 550<span> F CFA</span></div>
+        </div>
+        <div class="tc-route">
+          <div class="tc-city">Ouaga</div>
+          <div class="tc-line"><div class="tc-bar"></div><div class="tc-dot">🚌</div></div>
+          <div class="tc-city">Fada</div>
+        </div>
+        <div class="tc-dur">~4h00 de trajet</div>
+        <div class="tc-tags">
+          <div class="tag g">✓ Places dispo</div>
+          <div class="tag">Confort+</div>
+          <div class="tc-seats">8 places</div>
+        </div>
+      </div>
+
+      <div class="tc" onclick="lancerBillet('Ouagadougou','Koudougou','3000','TKF','08h00','~2h00')">
+        <div class="tc-top">
+          <div>
+            <div class="tc-comp">🚌 TKF · Départ 08h00</div>
+          </div>
+          <div class="tc-price">3 050<span> F CFA</span></div>
+        </div>
+        <div class="tc-route">
+          <div class="tc-city">Ouaga</div>
+          <div class="tc-line"><div class="tc-bar"></div><div class="tc-dot">🚌</div></div>
+          <div class="tc-city">Koudougou</div>
+        </div>
+        <div class="tc-dur">~2h00 de trajet</div>
+        <div class="tc-tags">
+          <div class="tag g">✓ Places dispo</div>
+          <div class="tag">Standard</div>
+          <div class="tc-seats">20 places</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE BILLETS — 4 ÉTAPES
+========================================================= -->
+<div id="page-billets" class="page">
+
+  <!-- BARRE D'ÉTAPES -->
+  <div class="flow-bar">
+    <div class="fs"><div class="fc cur" id="fc1">1</div><div class="fl cur" id="fl1">Trajet</div></div>
+    <div class="fs"><div class="fc" id="fc2">2</div><div class="fl" id="fl2">Infos</div></div>
+    <div class="fs"><div class="fc" id="fc3">3</div><div class="fl" id="fl3">Paiement</div></div>
+    <div class="fs"><div class="fc" id="fc4">4</div><div class="fl" id="fl4">Billet</div></div>
+  </div>
+
+  <!-- ÉTAPE 1 : TRAJET -->
+  <div class="sc active" id="sc1">
+    <div class="fg">
+      <label class="flbl">Compagnie de transport</label>
+      <select class="fsel" id="s1-comp">
+        <option value="">— Choisir une compagnie —</option>
+        <option>TCV</option><option>ELITIS</option><option>TIKFASH</option><option>TKF</option><option>STAF</option>
+      </select>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Ville de départ</label>
+        <select class="fsel" id="s1-dep">
+          <option>Ouagadougou</option><option>Bobo-Dioulasso</option><option>Koudougou</option><option>Ouahigouya</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="flbl">Destination</label>
+        <select class="fsel" id="s1-dest" onchange="majPrix()">
+          <option value="5000">Bobo-Dioulasso</option>
+          <option value="7500">Fada N'Gourma</option>
+          <option value="3000">Koudougou</option>
+          <option value="4000">Ouahigouya</option>
+          <option value="6000">Dédougou</option>
+          <option value="8500">Banfora</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Date de départ</label>
+        <input class="fi" type="date" id="s1-date">
+      </div>
+      <div class="fg">
+        <label class="flbl">Type de billet</label>
+        <select class="fsel" id="s1-type">
+          <option>Aller simple</option>
+          <option>Aller-retour</option>
+        </select>
+      </div>
+    </div>
+    <div class="price-banner">
+      <div class="pb-row"><span class="pb-lbl">Prix billet</span><span class="pb-val" id="px-billet">5 000 F</span></div>
+      <div class="pb-row"><span class="pb-lbl">Frais ECO-TRANS</span><span class="pb-val">50 F</span></div>
+      <div class="pb-row"><span class="pb-lbl" style="font-weight:800;font-size:14px">Total</span><span class="pb-total" id="px-total">5 050 F</span></div>
+    </div>
+    <button class="btn-main" onclick="aller(2)">Continuer → Mes informations</button>
+  </div>
+
+  <!-- ÉTAPE 2 : INFOS PASSAGER -->
+  <div class="sc" id="sc2">
+    <div class="fg">
+      <label class="flbl">Nom et Prénom complet</label>
+      <input class="fi" type="text" placeholder="Ex : KONÉ Salif" id="s2-nom">
+    </div>
+    <div class="fg">
+      <label class="flbl">Numéro CNI (Carte Nationale d'Identité)</label>
+      <input class="fi" type="text" placeholder="BCXXXXXXXXX" id="s2-cni">
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Téléphone</label>
+        <input class="fi" type="tel" placeholder="+226 70 XX XX XX" id="s2-tel">
+      </div>
+      <div class="fg">
+        <label class="flbl">Email (facultatif)</label>
+        <input class="fi" type="email" placeholder="vous@email.com">
+      </div>
+    </div>
+    <div class="recap-box">
+      <div style="font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Récapitulatif</div>
+      <div class="rrow"><span class="rlbl">Départ</span><span class="rval" id="rp-dep">—</span></div>
+      <div class="rrow"><span class="rlbl">Destination</span><span class="rval" id="rp-dest">—</span></div>
+      <div class="rrow"><span class="rlbl">Date</span><span class="rval" id="rp-date">—</span></div>
+      <div class="rrow"><span class="rlbl">Compagnie</span><span class="rval" id="rp-comp">—</span></div>
+      <div class="rrow" style="border-top:1px solid var(--border);padding-top:8px;margin-top:3px">
+        <span class="rlbl" style="font-weight:800;color:var(--text)">Total</span>
+        <span class="rval" style="color:var(--or);font-size:16px" id="rp-total">—</span>
+      </div>
+    </div>
+    <button class="btn-main" onclick="aller(3)">Continuer → Paiement</button>
+    <button class="btn-out" onclick="aller(1)">← Retour</button>
+  </div>
+
+  <!-- ÉTAPE 3 : PAIEMENT -->
+  <div class="sc" id="sc3">
+    <div style="font-size:14px;font-weight:700;color:var(--text2);margin-bottom:14px">Choisissez votre mode de paiement :</div>
+    <div class="pay-list">
+      <div class="po on" onclick="choisirPay(this,'Orange Money')">
+        <div class="po-logo" style="background:#FF6900">📱</div>
+        <div><div class="po-name">Orange Money</div><div class="po-desc">Paiement mobile instantané</div></div>
+        <div class="po-dot"></div>
+      </div>
+      <div class="po" onclick="choisirPay(this,'Wave')">
+        <div class="po-logo" style="background:#1DC3FF">🌊</div>
+        <div><div class="po-name">Wave</div><div class="po-desc">Transfert rapide, sans frais cachés</div></div>
+        <div class="po-dot"></div>
+      </div>
+      <div class="po" onclick="choisirPay(this,'Moov Money')">
+        <div class="po-logo" style="background:#0097D9">📲</div>
+        <div><div class="po-name">Moov Money</div><div class="po-desc">Moov Africa Burkina Faso</div></div>
+        <div class="po-dot"></div>
+      </div>
+      <div class="po" onclick="choisirPay(this,'Coris Money')">
+        <div class="po-logo" style="background:#009B4E">🏦</div>
+        <div><div class="po-name">Coris Money</div><div class="po-desc">Coris Bank International</div></div>
+        <div class="po-dot"></div>
+      </div>
+      <div class="po" onclick="choisirPay(this,'Mobicash')">
+        <div class="po-logo" style="background:#005BAC">💳</div>
+        <div><div class="po-name">Mobicash</div><div class="po-desc">Réseau Burkina Faso</div></div>
+        <div class="po-dot"></div>
+      </div>
+      <div class="po" onclick="choisirPay(this,'Eco Bank')">
+        <div class="po-logo" style="background:#2B5C9B">🏛️</div>
+        <div><div class="po-name">Eco Bank</div><div class="po-desc">Paiement bancaire en ligne</div></div>
+        <div class="po-dot"></div>
+      </div>
+    </div>
+    <div class="pay-amount-box">
+      <div class="pab-lbl">Montant à payer</div>
+      <div class="pab-val" id="pay-amount">5 050 F CFA</div>
+      <div class="pab-via">Via <span id="pay-method">Orange Money</span></div>
+    </div>
+    <button class="btn-main" onclick="confirmerPaiement()">✅ Confirmer et payer</button>
+    <button class="btn-out" onclick="aller(2)">← Retour</button>
+  </div>
+
+  <!-- ÉTAPE 4 : BILLET GÉNÉRÉ -->
+  <div class="sc" id="sc4">
+    <div class="success-top">
+      <div class="sicon">🎉</div>
+      <div class="stitle">Paiement confirmé !</div>
+      <div class="ssub">Votre billet a été envoyé par SMS</div>
+    </div>
+    <div class="ticket-wrap">
+      <div class="tk-top">
+        <div class="tk-header">
+          <div class="tk-brand">ECO<span>-TRANS</span></div>
+          <div class="tk-badge">✅ CONFIRMÉ</div>
+        </div>
+        <div class="tk-route">
+          <div class="tk-city" id="tk-dep">Ouaga</div>
+          <div class="tk-mid">
+            <div class="tk-line"></div>
+            <div class="tk-dur" id="tk-dur">🚌 Direct</div>
+          </div>
+          <div class="tk-city" id="tk-arr">Bobo</div>
+        </div>
+      </div>
+      <div class="tk-notch">
+        <div class="tk-nl"></div>
+        <div class="tk-dash"></div>
+        <div class="tk-nr"></div>
+      </div>
+      <div class="tk-body">
+        <div class="tk-grid">
+          <div><div class="tkg-lbl">Passager</div><div class="tkg-val" id="tk-nom">—</div></div>
+          <div><div class="tkg-lbl">Date</div><div class="tkg-val" id="tk-date">—</div></div>
+          <div><div class="tkg-lbl">Compagnie</div><div class="tkg-val" id="tk-comp">—</div></div>
+          <div><div class="tkg-lbl">Type</div><div class="tkg-val" id="tk-type">—</div></div>
+          <div><div class="tkg-lbl">Montant</div><div class="tkg-val" id="tk-prix" style="color:var(--or3)">—</div></div>
+          <div><div class="tkg-lbl">Paiement</div><div class="tkg-val" id="tk-pay">—</div></div>
+        </div>
+        <div class="tk-code-box">
+          <div class="tk-code-lbl">Code d'embarquement</div>
+          <div class="tk-code" id="tk-code">——</div>
+          <div class="tk-code-hint">Présentez ce code à la gare ✓</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn-main" style="margin-top:18px" onclick="showPage('accueil')">🏠 Retour à l'accueil</button>
+    <button class="btn-out" onclick="showPage('reservation')">📋 Voir mes voyages</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE COLIS
+========================================================= -->
+<div id="page-colis" class="page">
+  <div class="colis-hero">
+    <div class="ch-icon">📦</div>
+    <div class="ch-title">Expédition de Colis</div>
+    <div class="ch-sub">Envoyez vos colis partout<br>au Burkina Faso</div>
+  </div>
+  <div class="pad">
+    <div style="font-size:13px;font-weight:800;color:var(--text2);margin-bottom:12px">Type d'expédition :</div>
+    <div class="ctype-grid">
+      <div class="ctc on" onclick="typesColis(this)">
+        <div class="ctc-em">⚡</div>
+        <div class="ctc-name">Express</div>
+        <div class="ctc-price">500 – 1 500 F</div>
+      </div>
+      <div class="ctc" onclick="typesColis(this)">
+        <div class="ctc-em">🚛</div>
+        <div class="ctc-name">Gros / Marchandise</div>
+        <div class="ctc-price">Selon poids</div>
+      </div>
+      <div class="ctc" onclick="typesColis(this)">
+        <div class="ctc-em">📋</div>
+        <div class="ctc-name">Réservation place</div>
+        <div class="ctc-price">50 F</div>
+      </div>
+      <div class="ctc" onclick="typesColis(this)">
+        <div class="ctc-em">🔍</div>
+        <div class="ctc-name">Suivi colis</div>
+        <div class="ctc-price">Gratuit</div>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label class="flbl">Votre nom (expéditeur)</label>
+      <input class="fi" type="text" placeholder="Votre nom complet" id="c-exp">
+    </div>
+    <div class="fg">
+      <label class="flbl">Nom du destinataire</label>
+      <input class="fi" type="text" placeholder="Nom de la personne qui reçoit" id="c-dnom">
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Ville d'envoi</label>
+        <select class="fsel">
+          <option>Ouagadougou</option><option>Bobo-Dioulasso</option><option>Koudougou</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="flbl">Ville de réception</label>
+        <select class="fsel" id="c-dest" onchange="calcColis()">
+          <option value="500">Koudougou (500 F)</option>
+          <option value="750">Ouahigouya (750 F)</option>
+          <option value="1000">Bobo-Dioulasso (1 000 F)</option>
+          <option value="1200">Fada N'Gourma (1 200 F)</option>
+          <option value="1500">Banfora (1 500 F)</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Nature du colis</label>
+        <input class="fi" type="text" placeholder="Vêtements, documents...">
+      </div>
+      <div class="fg">
+        <label class="flbl">Poids estimé (kg)</label>
+        <input class="fi" type="number" placeholder="Ex: 2" id="c-poids" min="0.1" step="0.1" oninput="calcColis()">
+      </div>
+    </div>
+    <div class="fg">
+      <label class="flbl">Téléphone du destinataire</label>
+      <input class="fi" type="tel" placeholder="+226 XX XX XX XX">
+    </div>
+    <div class="price-banner">
+      <div class="pb-row"><span class="pb-lbl">Coût expédition estimé</span><span class="pb-val" id="col-px">500 F</span></div>
+      <div class="pb-row"><span class="pb-lbl">Frais ECO-TRANS</span><span class="pb-val">50 F</span></div>
+      <div class="pb-row"><span class="pb-lbl" style="font-weight:800;font-size:14px">Total</span><span class="pb-total" id="col-tot">550 F</span></div>
+    </div>
+    <div class="fg">
+      <label class="flbl">Mode de paiement</label>
+      <select class="fsel">
+        <option>Orange Money</option><option>Wave</option><option>Moov Money</option>
+        <option>Coris Money</option><option>Mobicash</option><option>Eco Bank</option>
+      </select>
+    </div>
+    <button class="btn-main" onclick="envoyerColis()">📦 Confirmer l'expédition</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE RESERVATION
+========================================================= -->
+<div id="page-reservation" class="page">
+  <div class="res-hero">
+    <div class="ch-icon">📋</div>
+    <div class="ch-title">Mes Voyages</div>
+    <div class="ch-sub">Consultez ou modifiez<br>vos réservations actives</div>
+  </div>
+  <div class="pad">
+    <div style="display:flex;gap:10px;margin-bottom:20px">
+      <input class="fi" style="flex:1" type="text" placeholder="Code d'embarquement (ex: ET-240601)" id="res-code">
+      <button class="hdr-btn solid" style="border-radius:12px;padding:0 16px;font-size:13px" onclick="rechercherCode()">🔍</button>
+    </div>
+
+    <div style="font-size:12px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Réservations actives</div>
+    <div class="res-cards">
+
+      <div class="rc">
+        <div class="rc-top">
+          <div>
+            <div class="rc-code">🎟️ ET-240601 · TCV</div>
+            <div class="rc-date">05 juin 2026 · Départ 06h00</div>
+          </div>
+          <div class="sb g">Confirmé</div>
+        </div>
+        <div class="tc-route">
+          <div class="tc-city">Ouaga</div>
+          <div class="tc-line"><div class="tc-bar"></div><div class="tc-dot">🚌</div></div>
+          <div class="tc-city">Bobo</div>
+        </div>
+        <div class="rc-actions">
+          <button class="rc-btn" onclick="toast('📅 Modification de date','ok')">📅 Modifier date</button>
+          <button class="rc-btn" onclick="toast('🚌 Changement de compagnie','ok')">🚌 Changer compagnie</button>
+          <button class="rc-btn" onclick="toast('❌ Annulation enregistrée','err')">❌ Annuler</button>
+        </div>
+      </div>
+
+      <div class="rc">
+        <div class="rc-top">
+          <div>
+            <div class="rc-code">📦 ET-240590 · TKF Colis</div>
+            <div class="rc-date">04 juin 2026</div>
+          </div>
+          <div class="sb b">En transit</div>
+        </div>
+        <div class="tc-route">
+          <div class="tc-city">Ouaga</div>
+          <div class="tc-line"><div class="tc-bar"></div><div class="tc-dot">📦</div></div>
+          <div class="tc-city">Koudougou</div>
+        </div>
+        <div style="font-size:12px;color:var(--text3);margin-top:8px">Colis : documents · 0.5 kg · Wave</div>
+      </div>
+
+      <div class="rc">
+        <div class="rc-top">
+          <div>
+            <div class="rc-code">🎟️ ET-240512 · ELITIS</div>
+            <div class="rc-date">02 juin 2026 · Départ 07h30</div>
+          </div>
+          <div class="sb y">En attente</div>
+        </div>
+        <div class="tc-route">
+          <div class="tc-city">Ouaga</div>
+          <div class="tc-line"><div class="tc-bar"></div><div class="tc-dot">🚌</div></div>
+          <div class="tc-city">Fada</div>
+        </div>
+        <div class="rc-actions">
+          <button class="rc-btn" onclick="toast('📅 Modification de date','ok')">📅 Modifier</button>
+          <button class="rc-btn" onclick="toast('❌ Annulation enregistrée','err')">❌ Annuler</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE LITIGE
+========================================================= -->
+<div id="page-litige" class="page">
+  <div class="lit-hero">
+    <div class="ch-icon">⚖️</div>
+    <div class="ch-title">Règlement de Litige</div>
+    <div class="ch-sub">Nous facilitons la résolution<br>de vos différends</div>
+  </div>
+  <div class="lit-steps">
+    <div class="lstep"><div class="lsn done">✓</div><div><div class="ls-title">1. Dépôt du litige</div><div class="ls-desc">Remplissez le formulaire ci-dessous pour décrire votre problème.</div></div></div>
+    <div class="lstep"><div class="lsn">2</div><div><div class="ls-title">2. Prise de contact</div><div class="ls-desc">ECO-TRANS contacte la compagnie concernée sous 24h.</div></div></div>
+    <div class="lstep"><div class="lsn">3</div><div><div class="ls-title">3. Table ronde</div><div class="ls-desc">Réunion organisée entre les deux parties pour trouver un accord.</div></div></div>
+    <div class="lstep"><div class="lsn">4</div><div><div class="ls-title">4. Résolution à l'amiable</div><div class="ls-desc">Accord transmis aux parties, litige clôturé.</div></div></div>
+  </div>
+  <div class="pad" style="padding-top:14px">
+    <div style="font-size:14px;font-weight:800;margin-bottom:14px">📝 Déposer un litige</div>
+    <div class="fg">
+      <label class="flbl">Votre nom complet</label>
+      <input class="fi" type="text" placeholder="Nom et prénom">
+    </div>
+    <div class="fg">
+      <label class="flbl">Votre téléphone</label>
+      <input class="fi" type="tel" placeholder="+226 XX XX XX XX">
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label class="flbl">Compagnie concernée</label>
+        <select class="fsel">
+          <option>TCV</option><option>ELITIS</option><option>TIKFASH</option><option>TKF</option><option>Autre</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="flbl">Code billet / bordereau</label>
+        <input class="fi" type="text" placeholder="ET-XXXXXX">
+      </div>
+    </div>
+    <div class="fg">
+      <label class="flbl">Description du problème</label>
+      <textarea class="fi" rows="4" placeholder="Décrivez votre problème en détail..."></textarea>
+    </div>
+    <button class="btn-main" onclick="toast('⚖️ Litige soumis — Nous vous contacterons sous 24h','ok')">⚖️ Soumettre le litige</button>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:10px;line-height:1.6">La facturation du service est déterminée selon l'implication requise.</div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PAGE PROFIL
+========================================================= -->
+<div id="page-profil" class="page">
+  <div class="prof-header">
+    <div class="prof-av">👤</div>
+    <div class="prof-name">Mon Compte</div>
+    <div class="prof-phone">+226 70 88 80 84</div>
+  </div>
+  <div class="prof-stats">
+    <div class="pstat"><div class="pstat-val">7</div><div class="pstat-lbl">Voyages effectués</div></div>
+    <div class="pstat"><div class="pstat-val">3</div><div class="pstat-lbl">Colis envoyés</div></div>
+  </div>
+  <div class="pmenu" style="margin-top:24px">
+    <div class="mi" onclick="showPage('reservation')">
+      <div class="mi-ic">🎟️</div>
+      <div><div class="mi-title">Mes billets & réservations</div><div class="mi-sub">Consulter, modifier ou annuler</div></div>
+      <div class="mi-arr">›</div>
+    </div>
+    <div class="mi" onclick="showPage('colis')">
+      <div class="mi-ic">📦</div>
+      <div><div class="mi-title">Mes expéditions colis</div><div class="mi-sub">Suivi en temps réel</div></div>
+      <div class="mi-arr">›</div>
+    </div>
+    <div class="mi" onclick="showPage('litige')">
+      <div class="mi-ic">⚖️</div>
+      <div><div class="mi-title">Mes litiges</div><div class="mi-sub">Suivre mes dossiers ouverts</div></div>
+      <div class="mi-arr">›</div>
+    </div>
+    <div class="mi" onclick="toast('💬 WhatsApp : +226 68 68 14 23','ok')">
+      <div class="mi-ic">💬</div>
+      <div><div class="mi-title">Contacter le support</div><div class="mi-sub">WhatsApp · Email · Appel</div></div>
+      <div class="mi-arr">›</div>
+    </div>
+    <div class="mi">
+      <div class="mi-ic">⚙️</div>
+      <div><div class="mi-title">Paramètres</div><div class="mi-sub">Infos personnelles · Notifications</div></div>
+      <div class="mi-arr">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <div class="bi active" id="bi-accueil" onclick="showPage('accueil')"><div class="bi-icon">🏠</div><div class="bi-lbl">Accueil</div></div>
+  <div class="bi" id="bi-billets" onclick="showPage('billets')"><div class="bi-icon">🎟️</div><div class="bi-lbl">Billets</div></div>
+  <div class="bi" id="bi-colis" onclick="showPage('colis')"><div class="bi-icon">📦</div><div class="bi-lbl">Colis</div></div>
+  <div class="bi" id="bi-reservation" onclick="showPage('reservation')"><div class="bi-icon">📋</div><div class="bi-lbl">Mes voyages</div></div>
+  <div class="bi" id="bi-profil" onclick="showPage('profil')"><div class="bi-icon">👤</div><div class="bi-lbl">Profil</div></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast-el"></div>
+
+<script>
+// INIT
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const l = document.getElementById('loader');
+    l.style.opacity = '0';
+    setTimeout(() => l.style.display = 'none', 500);
+  }, 1000);
+  const tomorrow = new Date(Date.now() + 86400000);
+  document.getElementById('h-date').valueAsDate = tomorrow;
+  document.getElementById('s1-date').valueAsDate = tomorrow;
+});
+
+// NAVIGATION
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.bi').forEach(b => b.classList.remove('active'));
+  const bi = document.getElementById('bi-' + id);
+  if (bi) bi.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// SWAP VILLES
+function swapVilles() {
+  const d = document.getElementById('h-dep');
+  const a = document.getElementById('h-arr');
+  const tmp = d.value;
+  d.value = a.value; a.value = tmp;
+  toast('🔄 Villes échangées', 'ok');
+}
+
+// RECHERCHE ACCUEIL → BILLETS
+function rechercherTrajets() {
+  showPage('billets');
+  toast('🔍 Résultats chargés', 'ok');
+}
+
+// DEPUIS CARTE TRAJET
+function lancerBillet(dep, dest, prix, comp, heure, duree) {
+  showPage('billets');
+  setStep(1);
+  const sd = document.getElementById('s1-dep');
+  for (let o of sd.options) { if (o.text.includes(dep)) { sd.value = o.value; break; } }
+  const sa = document.getElementById('s1-dest');
+  for (let o of sa.options) { if (o.value == prix) { sa.value = prix; break; } }
+  const sc = document.getElementById('s1-comp');
+  for (let o of sc.options) { if (o.text === comp) { sc.value = comp; break; } }
+  majPrix();
+}
+
+// PRIX BILLET
+function majPrix() {
+  const p = parseInt(document.getElementById('s1-dest').value) || 5000;
+  document.getElementById('px-billet').textContent = p.toLocaleString('fr-FR') + ' F';
+  document.getElementById('px-total').textContent = (p + 50).toLocaleString('fr-FR') + ' F';
+  document.getElementById('pay-amount').textContent = (p + 50).toLocaleString('fr-FR') + ' F CFA';
+}
+
+// ÉTAPES
+let step = 1;
+function aller(n) {
+  if (n === 2 && step === 1) {
+    if (!document.getElementById('s1-comp').value) { toast('⚠️ Choisissez une compagnie', 'err'); return; }
+  }
+  if (n === 3 && step === 2) {
+    const nom = document.getElementById('s2-nom').value.trim();
+    const cni = document.getElementById('s2-cni').value.trim();
+    const tel = document.getElementById('s2-tel').value.trim();
+    if (!nom) { toast('⚠️ Entrez votre nom', 'err'); return; }
+    if (!cni) { toast('⚠️ Entrez votre numéro CNI', 'err'); return; }
+    if (!tel) { toast('⚠️ Entrez votre téléphone', 'err'); return; }
+    // Remplir récap
+    const dest = document.getElementById('s1-dest');
+    document.getElementById('rp-dep').textContent = document.getElementById('s1-dep').value;
+    document.getElementById('rp-dest').textContent = dest.options[dest.selectedIndex].text;
+    document.getElementById('rp-date').textContent = document.getElementById('s1-date').value || '—';
+    document.getElementById('rp-comp').textContent = document.getElementById('s1-comp').value;
+    document.getElementById('rp-total').textContent = document.getElementById('px-total').textContent;
+  }
+  setStep(n);
+}
+
+function setStep(n) {
+  document.querySelectorAll('.sc').forEach(s => s.classList.remove('active'));
+  document.getElementById('sc' + n).classList.add('active');
+  for (let i = 1; i <= 4; i++) {
+    const c = document.getElementById('fc' + i);
+    const l = document.getElementById('fl' + i);
+    c.className = 'fc'; l.className = 'fl';
+    if (i < n) { c.classList.add('done'); c.textContent = '✓'; }
+    else if (i === n) { c.classList.add('cur'); c.textContent = i; l.classList.add('cur'); }
+    else { c.textContent = i; }
+  }
+  step = n;
+  window.scrollTo(0, 0);
+}
+
+// PAIEMENT
+let methode = 'Orange Money';
+function choisirPay(el, m) {
+  document.querySelectorAll('.po').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  methode = m;
+  document.getElementById('pay-method').textContent = m;
+}
+
+function confirmerPaiement() {
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  const dest = document.getElementById('s1-dest');
+  const dTxt = dest.options[dest.selectedIndex].text;
+  const prix = parseInt(dest.value) || 5000;
+  const dep = document.getElementById('s1-dep').value;
+
+  document.getElementById('tk-dep').textContent = dep.split('-')[0].substring(0,5);
+  document.getElementById('tk-arr').textContent = dTxt.substring(0,5);
+  document.getElementById('tk-dur').textContent = '🚌 Direct';
+  document.getElementById('tk-nom').textContent = document.getElementById('s2-nom').value || '—';
+  document.getElementById('tk-date').textContent = document.getElementById('s1-date').value || '—';
+  document.getElementById('tk-comp').textContent = document.getElementById('s1-comp').value;
+  document.getElementById('tk-type').textContent = document.getElementById('s1-type').value;
+  document.getElementById('tk-prix').textContent = (prix + 50).toLocaleString('fr-FR') + ' F';
+  document.getElementById('tk-pay').textContent = methode;
+  document.getElementById('tk-code').textContent = code;
+
+  setStep(4);
+  toast('🎟️ Billet confirmé ! SMS envoyé.', 'ok');
+}
+
+// COLIS
+function typesColis(el) {
+  document.querySelectorAll('.ctc').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+}
+function calcColis() {
+  const base = parseInt(document.getElementById('c-dest').value) || 500;
+  const poids = parseFloat(document.getElementById('c-poids').value) || 1;
+  const total = base + Math.round(poids * 80);
+  document.getElementById('col-px').textContent = total.toLocaleString('fr-FR') + ' F';
+  document.getElementById('col-tot').textContent = (total + 50).toLocaleString('fr-FR') + ' F';
+}
+function envoyerColis() {
+  const exp = document.getElementById('c-exp').value.trim();
+  const dnom = document.getElementById('c-dnom').value.trim();
+  if (!exp || !dnom) { toast('⚠️ Remplissez tous les champs', 'err'); return; }
+  toast('📦 Colis enregistré ! Coursier en route.', 'ok');
+}
+
+// RESERVATION
+function rechercherCode() {
+  const code = document.getElementById('res-code').value.trim();
+  if (!code) { toast('⚠️ Entrez un code d\'embarquement', 'err'); return; }
+  toast('✅ Réservation trouvée : ' + code, 'ok');
+}
+
+// TOAST
+function toast(msg, type) {
+  const el = document.getElementById('toast-el');
+  el.textContent = msg;
+  el.className = 'toast show ' + (type || '');
+  setTimeout(() => el.classList.remove('show'), 3200);
+}
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js")
+      .then(r => console.log("SW enregistré:", r.scope))
+      .catch(e => console.log("SW erreur:", e));
+  });
+}
+</script>
+</body>
+</html>

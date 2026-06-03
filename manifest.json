@@ -1,0 +1,43 @@
+{
+  "name": "ECO-TRANS – Transport Burkina Faso",
+  "short_name": "ECO-TRANS",
+  "description": "Achetez vos billets de transport en ligne au Burkina Faso. Réservations, colis, litiges.",
+  "start_url": "./ecotrans-client.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5620F",
+  "theme_color": "#F5620F",
+  "lang": "fr",
+  "categories": ["travel", "transportation"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Acheter un billet",
+      "short_name": "Billets",
+      "description": "Acheter un billet de transport en ligne",
+      "url": "./ecotrans-client.html#billets",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Expédier un colis",
+      "short_name": "Colis",
+      "description": "Envoyer un colis au Burkina Faso",
+      "url": "./ecotrans-client.html#colis",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
